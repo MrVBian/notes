@@ -120,6 +120,25 @@ map<left> :vertical resize-5<CR>
 map<right> :vertical resize+5<CR>
 
 
+git config --global user.name "name"
+git config --global user.email ""
+init
+clip < ~/.ssh/id_rsa.pub
+
+git status
+git log
+git log --pretty=oneline
+git reset --hard number
+git add -A
+git commit -m "desc"
+git push
+git pull
+
+git branch
+
+
+
+
 
 
 
