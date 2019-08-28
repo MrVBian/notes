@@ -136,6 +136,10 @@ git pull
 
 git branch
 
+git checkout -b "分支"   //切换分支为
+git push --set-upstream origin 分支
+git branch -a
+
 
 
 
