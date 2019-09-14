@@ -1,0 +1,413 @@
+
+ctrl+alt+L可以格式化
+
+<img src="{{ url_for{'static',filename=''}}">
+
+pip freeze >requirements.txt
+
+pip install -r requirements.txt
+
+
+	 第一个完整程序
+	 # -*- coding:utf-8 -*-
+	 
+	 #1.导入Flask扩展
+	 from flask import Flask,render_template
+	 
+	 #2.创建Flask应用程序实例
+	 #需要传入__name__,作用是为了确定资源所在的路径
+	 app = Flask(__name__)
+	 
+	 #3.定义路由及视图函数
+	 #Flask中定义路由是通过装饰器实现的
+	 #软件名postman
+	 #路由默认只支持GET,如果需要增加,需要自行指定@app.route('/',methods=['GET','POST'])
+	 @app.route('/')
+	 def index():
+		 return 'hello flask'
+		 #return render_template('index.html')
+
+	 4.启动程序
+	 if __name__ == '__main__':
+		 #执行了app.run,就会将Flask程序运行在一个简易的服务器(Flask提供的，用于测试的)
+		 app.run()
+		 
+		 
+		 
+		 
+	 第二个完整程序
+	 # -*- coding:utf-8 -*-
+	 
+	 #1.导入Flask扩展
+	 from flask import Flask,render_template
+	 
+	 #2.创建Flask应用程序实例
+	 #需要传入__name__,作用是为了确定资源所在的路径
+	 app = Flask(__name__)
+	 
+	 #3.定义路由及视图函数
+	 #Flask中定义路由是通过装饰器实现的
+	 #软件名postman
+	 #路由默认只支持GET,如果需要增加,需要自行指定@app.route('/',methods=['GET','POST'])
+	 @app.route('/')
+	 def index():
+		 return 'hello flask'
+		 #return render_template('index.html')
+
+	 使用同一个视图函数,来显示不同用户的订单信息
+	 #<>定义路由的参数,<>内需要起个名字
+	 @app.route('/orders/<int:order_id>')
+	 def get_order_id(order_id):
+		 #参数类型,默认是字符串,unicode
+		 
+		 return 'order_id %s' % order_id
+		 
+		 
+	 4.启动程序
+	 if __name__ == '__main__':
+		 #执行了app.run,就会将Flask程序运行在一个简易的服务器(Flask提供的，用于测试的)
+		 app.run()
+		 
+		 
+		 
+		 
+		 
+	 第三个Jinji2模板引擎
+	 # -*- coding:utf-8 -*-
+	 
+	 from flask import Flask,render_template
+	 
+	 app = Flask(__name__)
+	 
+	 #1.如何返回一个网页(模板)
+	 #2.如何给模板填充数据
+	 @app.route('/')
+	 def index():
+	 
+		 #比如需要传入网址
+	 
+		 utl_str = 'www.bianzw.cn'
+	 
+		 #html文件中{{utl_str}}即实现传递功能
+		 return render_template('index.html',utl_str=utl_str)
+
+	 if __name__ == '__main__':
+		 #执行了app.run,就会将Flask程序运行在一个简易的服务器(Flask提供的，用于测试的)
+		 app.run()
+		 
+		 
+		
+		 
+		 
+		 
+	 第四个变量代码块的基本使用 
+	 {#下面是一个变量代码块的使用#}
+	 {{ utl_str }} <br>
+	 
+	 {#列表的使用#}
+	 {{ my_list }} <br>
+	 {{ my_list.2 }} <br>
+	 {{ my_list[2] }} <br>
+	 
+	 {#字典的使用#}
+	 {{ my_dict }} <br>
+	 {{ my_dict.url }} <br>
+	 {{ my_dict['url'] }} <br>
+	 
+	 {{ my_int }} <br>
+		 
+	
+	 @app.route('/')
+	 def index():
+	 	 
+		 utl_str = 'www.bianzw.cn'
+		 my_list = [1, 3, 5, 7, 9]
+		 my_dict = {
+			 'name':'卞振伟'
+			 'url':'www.bianzw.cn'
+		 }
+		 my_int = 520
+		 
+		 #html文件中{{utl_str}}即实现传递功能
+		 return render_template('index.html',
+								 utl_str=utl_str,
+								 my_list,
+								 my_dict,
+								 my_int,
+								 )
+	 
+		 
+		 
+		 
+		 
+		 
+	 第五个控制代码块的基本使用
+		 
+	 <hr>
+	 {# 控制代码块 {% %} #}
+	 
+	 {# for循环的使用,建议先写for,然后按住tab进行补全# }
+	 {% for num in my_list %}
+		 {# 数据大于3,才能显示 #}
+		 {% if num > 3 %}
+			 {{ num }} <br>
+		 {% endif %}
+	 {% endfor %}
+	 
+	 
+	 
+	 
+	 
+	 六、管道|过滤器
+	 
+	 常见内建过滤器
+	 
+	 链式调用
+	 {{ 'hello world' | reverse | upper }}
+	 
+	 字符串操作
+	 · safe: 禁用转义
+		 {{ '<em>hello</em>' | safe }}
+	 · capitalize: 把变量值的首字母转成大写,其余字母转小写
+		 {{ 'hello' | capitalize }}
+	 · lower: 把值转成小写
+		 {{ 'HELLO' | lower }}
+	 · upper: 把值转成大写
+		 {{ 'hello' | upper }}
+	 · title: 把值中的每个单词的首字母都转成大写
+		 {{ 'hello' | title }}
+	 · reverse: 字符串反转
+		 {{ 'olleh' | reverse }}
+	 · format: 格式化输出
+		 {{ '%s is %d' | format('name',17) }}
+	 · striptags: 渲染之前把值中所有的HTML标签都删掉
+		 {{ '<em>hello</em>' | striptags }}
+	 · truncate: 字符串截断
+		 {{ 'hello every one' | truncate(9) }}
+		 
+	 列表操作
+	 · first: 取第一个元素
+		 {{ [1,2,3,4,5,6] | first }}
+	 · last: 取最后一个元素
+		 {{ [1,2,3,4,5,6] | last }}
+	 · length: 获取列表长度
+		 {{ [1,2,3,4,5,6] | length }}
+	 · sum: 列表求和
+		 {{ [1,2,3,4,5,6] | sum }}
+	 · sort: 列表排序
+		 {{ [6,2,3,1,4,5] | sort }}
+	 
+	 语句块过滤
+	 {% filter upper %}
+		 一大段文字
+	 {% endfilter %}
+	 
+	 
+	 
+	 
+	 
+	 
+	 七、普通表单验证
+
+	 目的: 实现一个简单的登录逻辑请求
+
+	 1.路由需要有get和post两种请求方式 --> 需要判断请求方式
+	 2.获取请求的参数
+	 3.判断参数是否填写 & 密码是否相同
+	 4.如果判断都没有问题,就返回一个success
+
+	 from flask import Flask,render_template
+	 
+	 app = Flask(__name__)
+	 	 
+	 @app.route('/',methods=['GET','POST'])
+	 def index():
+		 #request: 请求对象 --> 获取请求方式、数据
+	 
+		 # 1.判断请求方式
+		 if request.method == 'POST'
+		 
+			 #2.获取请求的参数
+			 usename = request.form.get('name')	#标签的name
+			 password = request.form.get('password')
+			 repassword = request.form.get('repassword')
+			 
+			 #3.判断参数是否填写 & 密码是否相同
+			 if not all([usename, password, repassword]):
+				 print('账号或密码未填写')
+			 elif password != repassword:
+				 print('账号或密码错误')
+			 else:
+				 return 'success'
+				 
+		 return render_template('index.html')
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 八、flash闪现消息  WTForms --> Flask-WTF扩展
+	 
+	 '''
+	 给模板传递消息
+	 flash --> 需要对内容加密. 因此需要设置secret_key, 做加密消息的混淆
+	 模板中需要遍历消息
+	 '''
+	 
+	 from flask import Flask,render_template,flash
+	 
+	 app = Flask(__name__)
+	 
+	 app.secret_key = 'www.bianzw.cn'	#自定义字符串
+	 
+	 @app.route('/',methods=['GET',['POST']])
+	 def index():
+		 #request: 请求对象 --> 获取请求方式、数据
+		
+		 #1.判断请求方式
+		 if request.method == 'POST':
+			 
+			 #2.获取请求的参数
+			 usename = request.form.get('usename')
+			 password = request.form.get('password')
+			 repassword = request.form.get('repassword')
+			 
+			 #3.判断参数是否填写 & 密码事发后相同
+			 if not all([usename,password,repassword]):
+				 flash(u'参数不完整')
+			 elif password != repassword:
+				 flash(u'密码不一致')
+			 else:
+				 return 'success'
+		 return render_template('index.html')
+	 
+	 
+	 html:
+	 {% for message in get_flashed_messages() %}
+		 {{ message }}
+	 {% endfor %}
+	 
+	 
+	 
+	 
+	 九、
+	 
+	 视图函数:
+	 
+	 
+	 #coding=usf-8
+	 from flask import Flask,render_template,request,flash
+	 
+	 #导入wtf扩展的表单类
+	 from flask_wtf import FlaskForm
+	 
+	 #导入自定义表单需要的字段
+	 from wtforms import SubmitField,StringField,PasswordField
+	 
+	 #解决编码问题
+	 import sys
+	 reload(sys)
+	 sys.setdefaultencoding("utf-8")
+	 
+	 app = Flask(__name__)
+	 app.cofig['SECRET_KEY']='www.bianzw.cn'
+	 
+	 #自定义表单类,文本字段、密码字段、提交按钮
+	 #需要自定义一个表单类
+	 class LoginForm(FlaskForm):
+		 usename = StringField('用户名')
+		 password = PasswordField('密码')
+		 password2 = PasswordField('确认密码')
+	 
+	 @app.route('/form',methods=['GET','POST'])
+	 def login():
+		 login_form = LoginForm()
+		 return render_template('index.html',form=login_form)
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 

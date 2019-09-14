@@ -1,0 +1,73 @@
+Windows 10/Win10命令大全通用
+		1.	calc----------启动计算器   
+		2.	appwiz.cpl----------程序和功能    
+		3.	charmap----------启动字符映射表    
+		4.	cleanmgr: 打开磁盘清理工具    	
+		5.	自动关机命令    Shutdown -s -t 600----表示600秒后自动关机  
+			shutdown -a ------可取消定时关机    
+			Shutdown -r -t 600------表示600秒后自动重启    
+			rundll32 user32.dll,LockWorkStation------表示锁定计算机   
+		6.	colorcpl----------颜色管理，配置显示器和打印机等中的色彩   
+		7.	CompMgmtLauncher----------计算机管理   
+		8.	comexp.msc----------打开系统组件服务   
+		9.	eventvwr----------事件查看器
+		10.	control----------控制面版    
+		11.	devmgmt.msc----------设备管理器  
+			hdwwiz.cpl----------设备管理器   
+		12.	desk.cpl----------屏幕分辨率    
+		13.	diskmgmt.msc----------磁盘管理   
+		14.	explorer----------打开资源管理器   
+		15.	Firewall.cpl----------Windows防火墙   
+		16.	fsmgmt.msc----------共享文件夹管理器   
+		17.	inetcpl.cpl----------Internet属性   
+		18.	logoff----------注销命令    
+		19.	main.cpl----------鼠标属性   
+		20.	mplayer2----------简易widnows media player   
+		21.	Msconfig.exe----------系统配置实用程序   
+		22.	msinfo32----------系统信息   
+		23.	mspaint----------画图   
+		24.	Msra----------Windows远程协助   
+		25.	mstsc----------远程桌面连接    
+		26.	ncpa.cpl----------网络连接     
+		27.	narrator----------屏幕“讲述人”    
+		28.	notepad----------打开记事本   
+		29.	Nslookup----------IP地址侦测器    
+		30.	odbcad32----------ODBC数据源管理器    
+		31.	OptionalFeatures----------打开“打开或关闭Windows功能”对话框    
+		32.	osk----------打开屏幕键盘    
+		33.	perfmon----------计算机性能监测器    
+		34.	powercfg.cpl----------电源选项  
+			cfg:control flow gragh控制流图 
+			cpl:Contol Panel Item控制面板项
+		35.	Resmon----------资源监视器   
+		36.	Rstrui----------系统还原   
+		37.	regedit.exe----------注册表    
+			regedt32----------注册表编辑器   
+		38.	services.msc----------本地服务设置    
+		39.	snippingtool----------截图工具，支持无规则截图    
+		40.	sysdm.cpl----------系统属性   
+		41.	taskmgr----------任务管理器(旧版)   
+		42.	taskschd.msc----------任务计划程序   
+		43.	timedate.cpl----------日期和时间    
+		44.	utilman----------辅助工具管理器    
+		45.	wf.msc----------高级安全Windows防火墙   
+		46.	WFS----------Windows传真和扫描   
+		47.	write----------写字板    
+		48.	dvdplay-----------DVD播放器。
+		49.	dxdiag----------检查DirectX信息。
+		50.	winver----------检查Windows版本。
+		51.	magnify----------放大镜实用程序.
+		52.	fsmgmt.msc----------共享文件夹管理器。
+		53.	utilman----------辅助工具管理器。
+		54.	sigverif----------文件签名验证程序。
+
+		
+		
+		
+	 3月份文化联谊
+	 5月份奔跑吧社团
+	 12月份社团文化节
+	 
+	 精品活动
+		比赛
+		培训

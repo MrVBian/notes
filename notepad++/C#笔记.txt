@@ -1,0 +1,37 @@
+
+对象：
+		1、属性（property）
+		2、方法（method）
+		3、事件（event）
+	
+F7： 代码窗口
+Shift+F7: 对象窗口
+F4： 属性窗口
+闪电图标： 对象的事件
+F5: 编译及运行
+Ctrl+F5： 编译及运行（不调试）
+svm+两次Tab： static void Main( string[] args )
+
+保存：
+		1、.cs	程序文件
+		2、.csproj	工程文件
+		3、.sln	解决方案
+		4、其他辅助文件
+
+exe文件中的内容：
+		1、IL指令（Intermediate Language）
+		2、元信息
+		
+反编译的工具ildasm.exe
+		C:\\program files\Microsoft SDKs\windows\v数字.0\bin\. 
+		C:\\program files\Microsoft SDKs\windows\v8.1A\bin\NETFX 4.5.1 Tools 
+		
+MessageBox.Show("你好！");
+this.Text = "这是一个应用程序";
+this.BackColor = Color.FromArgb(255, 255, 0);
+this.label1.SetBounds(100, 100, 200, 50);
+this.label1.Text = e.X + "," + e.Y;
+Random rnd = new Random();
+rnd.Next(255)
+double a = double.Parse( textBox1.Text );
+Console.WriteLine( "{0}{1}", a, b);

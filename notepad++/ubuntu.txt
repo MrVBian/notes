@@ -1,0 +1,223 @@
+	 
+	 
+	 shell	外壳
+	 
+	 Process
+	 Mem
+	 Disk
+	 
+	 Linux命令示例练习
+	 Linux基础入门(新)
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 cat /etc/passwd 查用户
+	 tree/		:x	:wq
+	 ^c			sudo -s
+	 lsb_release -a		查看系统版本	
+	
+	 命令	选项	参数
+	 
+	 more	:	用于分屏显示文件内容
+				空格键 ：显示手册页的下一屏
+				Enter键：一次滚动手册页的一行
+				b	   ：回滚一屏
+				f	   : 前滚一屏
+				q	   : 退出
+				/word  : 搜索word字符串
+	 clear	:	清屏
+	 ls		:	显示当前路径下的目录	-a显示隐藏文件	-l列表显示	-h文件大小
+	            /bin	ll:ls -la
+	 pwd	:	显示当前路径
+	 cat	:	查看文件
+	 gedit	:	编辑文件
+	 touch	:	创建文件
+	 mkdir	:	创建文件夹	A/B/C/D/E -p
+	 rmdir	:	删除文件夹
+	 cd		:	进z入文件夹	~home	-上一目录	cd A(/)	cd..
+	 history:	历史记录	!2018
+	 rm		:	删除文件	-r什么都能删
+	 mv		:	重命名
+				移动	mv 111.txt	laowang/
+						mv laowang/ gebilaowang
+	 cp		:	cp 2.txt A 		A的文件夹内出现一个2.txt	
+				-r 		文件夹也可移动
+	 grep	:	查找文件内内容
+				grep -n "ntfs"	xxx.txt	 -n显示匹配行及行号 -i忽略大小写 -v显示不包含匹配文本的所有行(相当于求反)
+				grep -v "ntfs"	xxx.txt
+				grep "^ntfs"	xxx.txt	 以ntfs开头匹配
+				grep "ntfs$"	xxx.txt	 以ntfs结尾匹配
+	 ln		:	-s 1.txt 1-hardlink.txt
+				1.txt 1-softlink.txt
+	 
+	 通配符 :	*	?	[]
+	 重定向 :	ls -alh > xxx.txt
+				ls -alh >> xxx.txt	追加
+				
+	 find	:	查找文件
+				find (.)/ -name text.sh
+				find / -name [A-Z]
+				find /tmp -size +4k -size -5M
+	 
+	 tar	:	打包
+				tar -cvf test.tar *.py  	打包
+				tar -xvf text.tar		    解包
+				tar -zcvf text.tar.gz *.py	压缩包
+				tar -zxvf text.tar.gz		解压缩	tar -zxvf test.tar.gz -c dongge/	解压到指定路径
+				tar -jcvf text.tar.bz2 *.py
+				tar -jxvf text.tar.bz2
+				zip zzz.zip *.py
+				unzip zzz.zip	   -d ./text指定解压路径
+	 
+	 which	:	输出命令目录	which ls
+	 
+	 calls	:	日历	-y 2008
+	 date	:	日期	data "+%Y===%m===%d"
+	 
+	 ps		:	进程 	ps -aux
+	 top	:	
+	 htop	:
+	 kill	:	-9 进程号n
+	 
+	 reboot	:	重启
+	 shutdown -h now	立刻关机	shutdown -h +10(十分钟后关)	shutdown -h 20:20	20:20关机
+	 init 0	:	关机
+	 init 6	:	重启
+	 df		:	检测磁盘空间	-h
+	 du		:	当前路径使用情况
+	 
+	 useradd:	增加一个账户		sudo useradd shuaige -m
+				sudo passwd shuaige	设置密码
+				su shuaige			切换账户	su - shuaige	切换账户并切换进家目录	su -s	超级管理员
+				exit				退出账户
+				whoami				显示账户名称
+				cat /etc/passwd		最后一栏查账户
+				
+	 userdel:	删除账户
+				userdel -r gebilaowang	删除家目录
+				
+	 chgrp	:	改变文件用户组	chgrp xxxx 1.py
+	 chown	:	改变文件拥有者	chown xxxx 1.py
+	 chmod	:	修改文件权限	chmod u=rwx 1.py
+				u 文件的拥有者	g 同组	o 其它
+				r -> 4	w -> 2	x -> 1	chmod 137 1.py
+				
+	 groupadd	创建用户组
+				cat /etc/group		查看用户组
+	 sudo usermod -a -G sudo xxxx	给xxxx超级管理权限
+	 sudo usermod -a -G adm xxxx
+	 groupmod	显示组
+	 groupdel	删除用户组
+				
+	 ifconfig	:					网络信息
+	 ssh python@172.16.7.139 		远程连接
+	 
+	 ctrl + shift + t 				多标签
+	 alt  + 1						切换
+	 
+	 vim命令：
+		 命令模式
+			 i 	：	插入光标前一个字符		I
+			 a 	：				A
+			 o 	：	下一行		O
+			 yy	：	复制 光标所在的这一行
+			 p 	：	粘贴
+			 dd	：	剪切 光标所在的这一行
+			 D	：	从当前的光标开始剪切，一直到行末
+			 d0	：	从当前的光标
+			 dw ：	删一个单词
+			 x	:	删除当前的光标，每次只会删除一个
+			 X	:	删除当前的光标前面那个，每次只会删除一个
+			 r	：	替换一个字符
+			 R	：	替换光标以及后面的字符
+			 u	：	撤销刚刚的操作
+			 ctrl + r 	：	反撤销
+			 {}
+			 
+			 h 左 j 下 k 上 l 右
+			 
+			 H：当前屏幕的上方
+			 M：当前屏幕的中间
+			 L：当前屏幕的下方
+			 
+			 ctrl + f --> 向下翻一页代码
+			 ctrl + b --> 向上翻一页代码
+			 
+			 ctrl + d --> 向下翻半页代码
+			 ctrl + u --> 向上翻半页代码
+			 
+			 20G	快速定位到第20行
+			 G		快速定位到最后一行
+			 gg		快速定位到第一行
+			 
+			 w：向后跳一个单词的长度，即调到下一个单词的开始处
+			 b：向前跳一个单词的长度，即调到上一个单词的开始处
+			 
+			 选中一片代码
+			 v:
+			 V:
+			 
+			 >>	:	向右移动代码
+			 <<	:	向左移动代码
+			 
+			 . 	:	重复执行上一次的命令
+			 
+			 搜索	/hellO
+					n	下一个	N	上一个
+			 
+			 替换	%s/world/hello/g
+					11,16s/world/hello/g
+				
+		 编辑（插入）模式
+		 末行模式
+			 w	：	保存
+			 q	：	退出
+			 wq	：	保存并且退出
+			 shift + zz :	相当于wq                                                                                
+		 
+	 
+	 帮助文档：
+		 1:  --help		ls	-help
+		 2:	 man(manual)
+			 1:Standard commands(标准命令)
+			 2:System calls (系统调用,如open,write)
+			 3:Library functions(库函数,如printf,fopen)
+			 4:Special devices(设备文件的说明,/dev下各种设备)
+			 5:File formats(文件格式,如passwd)
+			 6:Games and toys(游戏与娱乐)
+			 7:Miscellaneous(杂项、惯例与协定等，例如Linux档案协定、ASC||码；environ全局变量)
+			 8:Administrative Commands(管理员命令,如ifconfig)
+			 
+			 man是按照手册的章节号的顺序进行搜索的
+			 
+			 man功能键：
+				空格: 显示手册页的下一屏
+				Enter:一次滚动手册页的一行
+	 
+	 /bin	:	程序相关
+	 /boot	:	启动相关
+	 /cdrom	:	光盘相关
+	 /dev	:	设备相关
+	 /etc	：	程序及服务器配置的地方
+	 /bin	:	库文件
+	 
+	 find 		find / -name "*name*"	/根目录	-name选项
+	            find ./ -size +4k -4k
+				find ./ -size "[A-Z]"	查找当前目录下
+				

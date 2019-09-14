@@ -1,0 +1,65 @@
+#coding=utf-8
+#-*- coding:utf-8 -*- 	让Python2识别中文
+
+:%s/^/#/g	 批量注释
+
+解释器777777777777777777
+class Test(object):
+	 def _init_(self):
+		 self.__num = 100
+
+	 def setNum(self, newNum)
+		 self.__num = newNum
+
+	 def getNum(self):
+		 return self.__num
+
+	 num = property(getNum, setNum)
+
+t = Test()
+t.num = 100
+print(t.num)
+
+
+class Test(object):
+	 def _init_(self):
+		 self.__num = 100
+
+	 @property
+	 def num(self, newNum)
+		 self.__num = newNum
+
+	 @num.setter
+	 def num(self):
+		 return self.__num
+
+	 num = property(getNum, setNum)
+
+t = Test()
+t.num = 100
+print(t.num)
+	 
+
+闭包
+	 def text(a,b):
+		 def text2(c):
+			return a*c+b
+		 return text2
+
+	 line = text(1,1)
+	 line = (0)
+装饰器
+	 def w1(func):
+		 def inner():
+			 print("---正在验证权限---")
+			 func()
+		 return inner
+		 
+	 def f1():
+		 print("---f1---")
+		 
+	 def f2():
+		 print("---f2---")
+		 
+	 f1=w1(f1)
+	 f1()
