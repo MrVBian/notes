@@ -1,0 +1,205 @@
+
+create database flask_sql_demo charset=utf-8;
+
+安装：
+	 Linux：
+		 Debian or Ubuntu ：	
+			 sudo apt-get install mysql mysql-server
+		 CentOS	：
+			 sudo yum install mysql mysql-server
+		 添加root用户密码：
+			 mysqladmin -u root -p password 'newpwd'
+		 登录：
+			 mysql -u root -p
+			 
+	 Mac系统：
+		 http://dev.mysql.com/downloads/mysql/
+		 
+		 给root用户添加密码
+			 /usr/local/mysql/bin/mysqladmin -u root -p password root
+		 通过终端连接server
+			 /usr/local/mysql/bin/mysql -u root -p
+		 通过终端启动或者关闭mysql
+			 sudo /Library/Startupitems/MySQLCOM/MYSQLCOM[start | stop | restart]
+			 
+配置文件路径系统：
+	 Win(默认)：
+		 C:\Program Files\MySQL\MySQL Server 8.0\my-default
+	 Linux：
+		 /etc/my.cnf
+	 Mac：
+		 /usr/local/mysql/my-cnf
+	 修改配置文件：
+		 [client]
+		 default-character-set=utf8
+		 
+		 [mysqld]
+		 character-set-server=utf8
+		 default-storage-engine=INNODB
+	 重启Mysql：
+		 Win：
+			 通过windows服务重启
+		 linux(CentOs)：
+			 /etc/init.d/mysqld restart
+		 Mac：
+			 sudo /Library/Startupitems/MySQLCOM/MYSQLCOM restart
+
+增添数据库：
+	 查看当前有哪些DB：
+		 show databases;
+	 添加DB：
+		 create database gc;
+	 删除DB：
+		 drop database gc;
+
+			 
+数据类型：
+	 CHAR(size):	 保存固定长度的字符串。在括号中指定字符串的最大长度，最多255个字符。
+	 VARCHAR(size):	 保存可变长度的字符串，在括号中指定字符串的最大长度，最多支持255字符。
+					 值长度大于255，则转换为TEXT类型
+	 
+	 TEXT：			 存放最大长度为65,535个字符的字符串
+	 LONGTEXT		 存放最大长度为4,294,967,295个字符的字符串
+	 
+	 INT(size)		 -128----127  常作bool
+	 BIGINT(size)
+	 FLOAT(size,d)	 带有浮动小数点的小数子。在括号中规定最大位数。在d参数中规定小数点右侧的最大位数。
+	 DOUBLE(size,d)	 带有浮动小点的的大数子。在括号中规定最大位数。在d参数中规定小数点右侧的最大位数。
+	 DECIMAL(size,d) 作为字符串存储的DOUBLE类型，允许固定的小数点。
+	 
+	 DATE()			 日期。格式：YYYY-MM-DD
+					 注释：支持的范围是从'1000-01-01’到‘9999-12-31'
+	 DATETIME()		 日期和时间的组合。格式：YYYY-MM-DD HH:MM:SS
+					 注释：支持的范围是从'1000-01-01 00:00:00'到'9999-12-31 23:59:59'
+			
+创建数据表table
+	 create table table_name(
+			  colum_name data_type,
+			  colum_name data_type,
+			  
+			  .
+			  .
+			  .
+			  colum_name data_type
+	 );
+	 
+	 show databases;
+	 use table_name;
+	 show tables;
+	 describe table_name;
+	 drop table table_name;	 //删除
+	 
+增加列：
+	 alter table 【table_name】 add 【column_name】 【data_type】 [not null][default]
+	 例子：
+		 alter table account add c1 int(11) not null default 1;  //不为空，不为null，默认值为1;
+
+删除列：
+	 alter table 【table_name】 drop 【column_name】
+	 例子：
+		 alter table account drop c1;
+		 
+修改table - 修改列信息和表名
+	 alter table 【table_name】 change 【old_column_name】 【new_column_name】 【data_type】
+	 
+	 1. 只改列名:
+		 data_type和原来一样，old_column_name != new_column_name
+		 
+	 2. 只改数据类型:
+		 old_column_name == new_column_name，data_type改变
+		 
+	 3. 列表和数据类型都改了
+		 
+修改表名
+	 alter table 【table_name】 rename 【new_table_name】
+	 例子：
+		 alter table account rename newaccount;
+	
+查看表数据
+	 select * from table_name;
+	 select col_name1,col_name2,···from table_name;
+		 
+插入数据
+	 insert into 【table_name】 values(值1，值2...)
+	 insert into 【table_name】(列1,列2···) values(值1,值2...)
+	 
+where条件查询
+	 select * from table_name where col_name 运算符 值
+	 例子：
+		 select * from book where title='t';
+		 
+		 运算符：
+			 =			等于
+			 !=			不等于
+			 >			大于
+			 <			小于
+			 >=			大于等于
+			 <=			小于等于
+			 
+			 between	在两个值范围内
+			 like		按某个模式查找
+		 
+		 组合条件		and、or
+		 
+null字段的判断	- is/is not
+		 select * from table_name where col_name is null
+		 select * from table_name where col_name is not null
+		 
+distinct(精确的)
+	 select distinct title from table_name;
+	 例子：
+		 select distinct title from book;
+		 
+order by
+	 1.按单一列名排序：
+	 select * from table_name [where 子句] order by col_name [asc/desc]
+	 
+	 2.按多列排序：
+	 select * from table_name [where 子句] order by col1[asc/desc],col2[asc/desc]···
+	 
+	 不加asc或者desc时,默认为asc.
+	 
+limit
+	 select * from table_name [where子句] [order by子句] limit [offset,] rowCount
+		 
+		 offset：
+			 查询结果的起始位置，第一条记录的其实是0
+		 rowCount：
+			 从offset位置开始，获取的记录条数
+			 
+		 注意	 limit rowCount = limit 0, rowCount
+		 
+insert into 与 select 组合
+	 一般用法：
+	 insert into 【表名】 values(值1,值2...)
+	 insert into 【表名】 (列1,列2···) values(值1,值2...)
+	 
+	 insert into 与 select 的组合用法
+	 insert into 【表名1】 select 列1,列2 from 【表名2】
+	 insert into 【表名1】 (列1,列2) select 列3,列4 from 【表名2】
+		 
+update语法
+	 修改单列：
+		 update 表名 set 列名 = xxx [where 字句]
+	 修改多列：
+		 update 表名 set 列名1 == xxx, 列名2 = xxx··· [where 字句]
+		 
+in语句
+	 select * from 表名 where 列名 in (value1,value2···)
+	 select * from 表名 where 列名 in (select 列名 from 表名)
+	 
+	 注解：列名 in(value1,value2···) 等同 列名 = value1 or 列名 = value2···
+		 
+between语法
+	 select * from 表名 where 列名 between 值1 and 值2
+	 select * from 表名 where 列名 not between 值1 and 值2
+		 
+like语法
+	 select * from 表名 where 列名 [not] like pattern
+	 
+	 pattern：匹配模式
+	 比如：
+		 'abc'	'%abc'	'abc%'	'%abc%'
+	 '%'是一个通配符，理解上可以把他当作任何字符串
+	 例子：
+		 '%abc'	能匹配	'erttsabc'

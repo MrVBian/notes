@@ -1,0 +1,18 @@
+alt / 自己整理的常用的Eclipse快捷键 
+
+方便自己记忆复习       
+            alt /              代码补齐
+            shift enter        光标移至下一行缩进位置
+            ctrl shift o       批量导入接口
+            ctrl 1             小×帮助解决菜单
+            ctrl alt + 上下    快捷复制
+            ctrl d             删除
+            ctrl  /            行注释
+            ctrl shift /       批量注释   \取消注释
+            ctrl shift x       大写
+            F2                 悬浮提示
+            ctrl shift f       代码格式化
+            ctrl shift i   	   光标到指定位置
+
+
+假如a是整数，p是质数，则a,p显然互质(即两者只有一个公约数1)，那么我们可以得到费马小定理的一个特例，即当p为质数时候， a^(p-1)≡1(mod p)。

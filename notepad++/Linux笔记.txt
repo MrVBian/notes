@@ -1,0 +1,147 @@
+
+GUI:Graphical User Interface
+CLI:COMMAND-LINE INTERFACE
+Shell俗称壳（用来区别于核），是指“提供使用者使用界面”的软件（命令解析器）
+API：（Application Programming Interface,应用程序编程接口）
+kernel：内核
+
+CLI接口：
+	命令提示符，prompt
+		#：root
+		$: 普通用户
+	命令：	
+
+命令格式：
+	命令 选项 参数
+		选项：
+			短选项：-
+				多个选项可以组合：-a -b =-ab
+			长选项：--
+		参数：命令的作用对象
+		
+使用凭证：
+
+root,redhat
+
+虚拟终端（terminal）：ctrl+alt+F1~F6		startx &
+
+GUI:
+	Gnome:C
+	KDE:C++
+	XFace:简洁适合用在嵌入式平台的轻量级桌面系统
+	
+CLI：
+	sh
+	bash（默认）
+	csh
+	zsh
+	ksh
+	tcsh
+	
+root,student,vistor(用户切换)
+
+su: switch user
+# su [-1] 用户名
+	
+# passwd:修改密码
+
+密码复杂性规则：非管理员修改密码需要满足此规则
+
+
+
+
+
+2.1
+
+GUI:
+	windows
+	X-Window
+	
+IDE:开发环境
+
+.dll:  dynamic link library 动态链接库
+.so :  shared object 共享对象      
+
+
+login:
+	用户名：	用户ID
+	
+认证机制：Authentication
+授权：Authorization
+审计：Audition(日志)
+
+prompt,命令提示符；
+命令：
+magic number: 魔数（shebang）
+
+# command option... arguments...
+
+选项：
+	短选项
+	长选项
+
+list: ls 列出，列表
+
+目录：文件，路径映射
+
+路径：从指令起始点到目的地所经过的位置
+
+文件系统：file system
+
+列出指定路径下的文件
+
+
+目录：working directory，current directory；
+
+pwd: Print Working directory(显示当前目录)
+
+ls
+	-l (显示文件属性)：长格式
+		文件类型
+			-：普通文件
+			d：目录文件
+			b: 块设备文件（block）
+			c: 字符设备文件（character）
+			l: 符号链接文件（symbolic link file）
+			p：命令管道文件（pipe）
+			s: 套接字文件（socket）
+			
+		文件权限：9位，没三位一组：rwx（读，写，执行）
+		
+		文件硬链接的次数
+	
+		文件的属主（owner）
+		
+		文件的属组（group）
+		
+		文件大小（size），单位是字节
+		
+		时间戳（timestamp）最近一次被修改的内容的时间
+			访问：access
+			修改：modify  文件内容发生改变
+			改变：change，metadata：元数据
+		
+	-h: 做单位换算 单位K
+	-a: 显示以.开头的隐藏文件
+		
+		
+		
+		
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
