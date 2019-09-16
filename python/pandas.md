@@ -238,28 +238,80 @@ print(age_labels)
 # 结果
 # 0 adult
 # 1 unknown
+
+
+# sample 4
+rt_mt_user = float_df[ ['RT_user_norm', 'Metacritic'] ]
+# np.std 标准差
+rt_mt_user.apply(lambda x : np.std(x), axis = 1)
 ```
 
-<++>
+--------
 
-#### 
+#### Series
 
-#### 
+```python
+# pandas series numpy
+import pandas as pd
+from pandas import Series
 
-#### 
+series_film = fandango['FILM']
+file_names = series_film.values
+# print( type(file_names) )
+# print( type(series_film) )
 
+series_rt = fandango['RottenTomatoes']
+rt_scores = series_rt.values
 
+# 以index(file_names)作为索引，rt_scores为值
+series_custom = Series(rt_scores, index = file_names)
+series_custom[ ['Minons(2015)'], ['Leviathan(2014)'] ]
+```
 
+--------
 
+#### Series 排序
 
+``` python
+# tolist转为数组
+original_index = series_custom.index.tolist()
 
+# 排序
+sorted_index = sorted(original_index)
 
+# 排序，返回下标
+sorted_by_index = series_custom.reindex(sorted_index)
 
+series_custom.sort_index()
+series_custom.sort_values()
+```
 
+#### Series 相加
 
+```python
+import numpy as np
+# 维度相同对应值相加。维度不同，相加构成一个新的Series
+np.add(series_custom, series_custom)
 
+# 计算RottenTomatoes与RottenTomatoes_User的和
+rt_critics = Series( fandango['RottenTomatoes'].values, index = fandango['FILM'] )
+rt_users = Series( fandango['RottenTomatoes_User'].values, index = fandango['FILM'] )
+rt_mean = ( rt_critics + rt_users ) / 2
+print(rt_mean)
+```
 
+--------
 
+#### pandas 以某参数(字符串)作下标
 
+``` python
+# set_index 设置一个参数可作为下标，数字下标依然可用
+fandango_films = data.set_index('FILM', drop = False)
+# print(fandango_films.index)
 
+fandango_films["Age of Ultron(2015)" : "Hot Tub Time Machine 2 (2015)"]
+fandango_films.loc["Age of Ultron(2015)" : "Hot Tub Time Machine 2 (2015)"]
 
+movies = ["Age of Ultron(2015)" : "Hot Tub Time Machine 2 (2015)"]
+fandango_films.loc[movies]
+```
