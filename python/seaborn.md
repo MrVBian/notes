@@ -137,11 +137,43 @@ sns.palplot( sns.color_palette("Paired", 12) )
 
 #### 调色板颜色设置
 
+> * xkcd 包含了一套众包努力的针对随机RGB色的命名。产生了954个可以随机通过xdcd_rgb字典中调用的命名颜色
+> * 可以根据颜色名字选中颜色
 ``` python
-plt.plot( [0, 1], sns.xkcd_rgb["pale red"], lw = 3 )
+# [0, 1] [5, 10],第一个参数对应横坐标，第二个参数对应纵坐标
+plt.plot( [0, 1], [0, 1], sns.xkcd_rgb["pale red"], lw = 3 )
+plt.plot( [0, 1], [0, 2], sns.xkcd_rgb["medium green"], lw = 3 )
+plt.plot( [0, 1], [0, 3], sns.xkcd_rgb["denim blue"], lw = 3 )
+```
+--------
+
+#### 连续色板
+
+> * 色彩随数据变换，比如数据越来越重要则颜色越来越深
+
+```python
+sns.palplot(sns.color_palette("Blues"))
+
+# 设置颜色由深到浅,翻转颜色渐变，可以在面板名称中添加一个_r后缀
+sns.palplot(sns.color_palette("BuGn_r", 10))
+```
+
+--------
+
+#### cubehelix__palette()调色板
+
+> * 色调线性变换
+
+```python
+sns.palplot(sns.color_palette("cubehelix", 8))
+
+# 指定颜色色彩变换
+sns.palplot(sns.cubehelix_palette(8, start = .5, rot = -.75))
+sns.palplot(sns.cubehelix_palette(8, start = .75, rot = -.150))
 ```
 
 <++>
+
 
 
 
