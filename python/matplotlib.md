@@ -32,6 +32,8 @@ plt.title('大标题')
 plt.show()
 ```
 
+![折线图](./images/matplotlib.jpeg)
+
 --------
 
 #### 勾画子图 add_subplot
@@ -50,6 +52,8 @@ ax3 = fig.add_subplot(2, 2, 4)
 plt.show()
 ```
 
+![子图](./images/matplotlib1.jpeg)
+
 --------
 
 #### 控制画图域大小，设置子图数据
@@ -67,6 +71,8 @@ ax1.plot( np.arange(10)*3, np.arange(10) )
 plt.show()
 ```
 
+![控制画图域大小，设置子图数据](./images/matplotlib2.jpeg) 
+
 --------
 
 #### 同一图画多条折线
@@ -82,6 +88,8 @@ fig = plt.figure( figsize = (6, 3) )
 plt.plot( unrate[0:12]['MONTH'], unrate[0:12]['VALUE'], c = 'red' )
 plt.plot( unrate[12:24]['MONTH'], unrate[12:24]['VALUE'], c = 'blue' )
 ```
+
+![同一图画多条折线](./images/matplotlib3.jpeg) 
 
 --------
 
@@ -112,6 +120,8 @@ plt.title('大标题')
 
 plt.show()
 ```
+
+![同一图画多条折线](./images/matplotlib4.jpeg) 
 
 --------
 
@@ -166,6 +176,8 @@ ax.set_title('Average User Rating For Avengers')
 plt.show()
 ```
 
+![柱状图](./images/matplotlib5.jpeg) 
+
 --------
 
 #### matplotlib 散点图
@@ -181,6 +193,8 @@ ax.set_ylabel( '纵坐标标题' )
 
 plt.show()
 ```
+
+![散点图](./images/matplotlib6.jpeg) 
 
 --------
 
@@ -202,6 +216,8 @@ ax2.set_ylabel( '纵坐标标题' )
 plt.show()
 ```
 
+
+
 --------
 
 #### hist 柱形图 
@@ -219,6 +235,11 @@ ax.hist( data['横坐标'], bins = 20 )
 ax.hist( data['横坐标'], range = (4, 5), bins = 20 )
 plt.show()
 ```
+
+![柱形图](./images/matplotlib7.jpeg) 
+![柱形图](./images/matplotlib8.jpeg) 
+![柱形图](./images/matplotlib9.jpeg) 
+
 
 --------
 
@@ -268,6 +289,8 @@ ax.set_ylim( 0, 50 )
 plt.show()
 ```
 
+![盒图](./images/matplotlib10.jpeg) 
+
 ```python
 cols = ['A', 'B', 'C', 'D']
 fig, ax = plt.subplots()
@@ -280,6 +303,8 @@ ax.set_ylim(0, 5)
 
 plt.show()
 ```
+
+![盒图](./images/matplotlib10.jpeg) 
 
 --------
 
@@ -314,7 +339,8 @@ ax.text( 2001, 100, '简述' )
 plt.show()
 ```
 
-
-
-
-
+![细节](./images/matplotlib11.jpeg) 
+![细节](./images/matplotlib12.jpeg) 
+![细节](./images/matplotlib13.jpeg) 
+![细节](./images/matplotlib14.jpeg) 
+![细节](./images/matplotlib15.jpeg) 
