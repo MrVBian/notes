@@ -1,4 +1,4 @@
-# matplotlib
+﻿# matplotlib
 
 --------
 
@@ -66,7 +66,7 @@ ax2 = fig.add_subplot( 2, 1, 2 )
 
 # 设置不同子图数据
 ax1.plot( np.random.randint(1, 5, 5), np.arange(5) )
-ax1.plot( np.arange(10)*3, np.arange(10) )
+ax2.plot( np.arange(10)*3, np.arange(10) )
 
 plt.show()
 ```
