@@ -171,9 +171,3 @@ sns.palplot(sns.color_palette("cubehelix", 8))
 sns.palplot(sns.cubehelix_palette(8, start = .5, rot = -.75))
 sns.palplot(sns.cubehelix_palette(8, start = .75, rot = -.150))
 ```
-
-<++>
-
-
-
-
