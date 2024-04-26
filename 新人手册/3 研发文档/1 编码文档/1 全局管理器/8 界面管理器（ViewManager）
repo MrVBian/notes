@@ -1,0 +1,401 @@
+[TOC]
+
+管理插件RuntimeEditor制作的界面，处理界面窗口逻辑，处理场景界面相机位置逻辑。
+# 1. 构造方法及单例
+构造方法，私有，无参
+```csharp
+    private ViewManager()
+    {
+        mDic = new Dictionary<string, List<RuntimeWindow>>();
+    }
+```
+单例
+```csharp
+    private static ViewManager manager;
+    public static ViewManager GetInstance()
+    {
+        if (manager == null)
+            manager = new ViewManager();
+
+        return manager;
+    }
+```
+
+# 2.类的成员
+
+## 2.1 字段和属性
+```csharp
+    /// <summary>
+    /// 记录相机位置
+    /// </summary>
+    private Vector3 mSceneCamerePos;
+    private Vector3 mSceneCamereAng;
+    private Vector3 mSceneCamerePivot;
+    private enum CameraTransformState
+    {
+        None,
+        Set,
+        Get
+    }
+    private CameraTransformState mState = CameraTransformState.None;
+```
+<center>用于记录相机位置所需数据</center>
+
+```csharp
+    private int mCount;
+    /// <summary>
+    /// 窗口界面数量
+    /// </summary>
+    public int WindowsCount
+    {
+        get => mCount;
+    }
+```
+
+<center>记录当前窗口数量</center>
+
+```csharp
+    private RuntimeWindow mSelectWindow;
+    /// <summary>
+    /// 鼠标当前停靠窗口
+    /// </summary>
+    public RuntimeWindow SelectWindow
+    {
+        get => mSelectWindow;
+    }
+```
+<center>鼠标当前停靠窗口</center>
+
+## 2. 2 成员方法
+```csharp
+    /// <summary>
+    /// 初始化，注册全局事件监听和RuntimeEditor事件，设置RuntimeEditor选中句柄大小
+    /// </summary>
+    public override void Init()
+    {
+        mWm = IOC.Resolve<IWindowManager>();
+        mWm.AfterLayout += AfterLayoutEvent;
+
+        mEditor = IOC.Resolve<IRTE>();
+        mEditor.WindowRegistered += windowRegistered;
+        mEditor.WindowUnregistered += windowUnregistered;
+        RTEBase.ExChangeAct += ExChangeActEvent;
+
+
+        mEditor = IOC.Resolve<IRTE>();
+        mSelection = mEditor.Selection as RuntimeSelection;
+        mSelection.SelectionChanged += SelectionChangedEvent;
+
+        //设置RuntimeEditor选中物体箭头句柄的大小
+        m_handlesComponent = IOC.Resolve<IRuntimeHandlesComponent>() as RuntimeHandlesComponent;
+        rate1 = 1080f / 1920f;
+        rate2 = Screen.height / (float)Screen.width;
+        float _scale = 1.2f * (1 + rate2 - rate1);
+        m_handlesComponent.HandleScale = _scale;
+        m_handlesComponent.SceneGizmoScale = _scale;
+
+        Globals.EventManager.Regist(EventManager.EventName_KeyCodeUp, KeyCodeUpEvent);
+        Globals.EventManager.Regist(EventManager.EventName_SceneViewFullScreen, SceneViewFullScreenEvent);
+    }
+```
+<center>初始化，注册全局事件监听和RuntimeEditor事件，设置RuntimeEditor选中句柄大小</center>
+
+```csharp
+    /// <summary>
+    /// 实时获取当前鼠标点击的窗口
+    /// </summary>
+    /// <param name="deltaTime"></param>
+    public override void Update(float deltaTime)
+    {
+        //判断当前用户选择的界面
+        foreach (var key in mDic.Keys)
+        {
+            for (int i = 0; i < mDic[key].Count; i++)
+            {
+                if (mDic[key][i].Editor.ActiveWindow != mDic[key][i] || mEditor.IsInputFieldActive || (mWm != null && mWm.IsDialogOpened))
+                {
+                    continue;
+                }
+                if (!object.ReferenceEquals(mDic[key][i], mSelectWindow))
+                {
+                    mSelectWindow = mDic[key][i];
+                    Globals.EventManager.DispatchEvent(EventManager.EventName_SelectWindowChange, mSelectWindow);
+                    //Debug.Log("name---->" + mSelectWindow.name);
+                }
+            }
+        }
+    }
+```
+<center>实时获取当前鼠标点击的窗口</center>
+
+```csharp
+    /// <summary>
+    /// RuntimeEditor窗口注册事件监听，如果创建的是场景界面，设置相机位置
+    /// </summary>
+    /// <param name="window"></param>
+    private void windowRegistered(RuntimeWindow window)
+    {
+        if (!mDic.ContainsKey(window.name))
+        {
+            mDic.Add(window.name, new List<RuntimeWindow>());
+        }
+        mDic[window.name].Add(window);
+        mCount += 1;
+        Globals.EventManager.DispatchEvent(EventManager.EventName_UpdateWindows, window, true);
+
+        if (window.name.Equals(BuiltInWindowNames.Scene))
+        {
+            if (string.IsNullOrEmpty(window.Args) || window.Args.Equals("Main"))
+            {
+                Tab _tab = Region.FindTab(window.transform);
+                if (_tab != null)
+                {
+                    _tab.CanClose = false;
+                    _tab.CanDrag = false;
+                    _tab.IsCloseButtonVisible = false;
+                }
+                mSceneCamera = window.Camera;
+
+                if (mState == CameraTransformState.Set)
+                {
+                    //SetSceneCamera(window.transform,);
+                    IRuntimeSceneComponent _sceneComponent = window.IOCContainer.Resolve<IRuntimeSceneComponent>();
+                    if (_sceneComponent != null)
+                    {
+                        Transform _cameraTrans = window.Camera.transform;
+                        _cameraTrans.position = mSceneCamerePos;
+                        _sceneComponent.Pivot = mSceneCamerePivot;
+                        SetSceneCamera(_cameraTrans, _sceneComponent, mSceneCamerePos, mSceneCamereAng);
+                        mState = CameraTransformState.Get;
+                    }
+                }
+            }
+        }
+    }
+```
+<center>RuntimeEditor窗口注册事件监听，如果创建的是场景界面，设置相机位置</center>
+
+```csharp
+    /// <summary>
+    /// RuntimeEditor窗口注销事件监听，如果销毁的是场景界面，保存相机位置
+    /// </summary>
+    /// <param name="window"></param>
+    private void windowUnregistered(RuntimeWindow window)
+    {
+        if (!mDic.ContainsKey(window.name))
+            return;
+
+        if (mDic[window.name].Contains(window))
+        {
+            mDic[window.name].Remove(window);
+            mCount -= 1;
+            Globals.EventManager.DispatchEvent(EventManager.EventName_UpdateWindows, window, false);
+            if (mState != CameraTransformState.Set && window.name.Equals(BuiltInWindowNames.Scene))
+            {
+                if (string.IsNullOrEmpty(window.Args) || window.Args.Equals("Main"))
+                {
+                    IRuntimeSceneComponent _sceneComponent = window.IOCContainer.Resolve<IRuntimeSceneComponent>();
+                    Transform _cameraTrans = window.Camera.transform;
+                    mSceneCamerePos = _cameraTrans.position;
+                    mSceneCamereAng = _cameraTrans.eulerAngles;
+                    mSceneCamerePivot = _sceneComponent.Pivot;
+                    mState = CameraTransformState.Set;
+                }
+            }
+        }
+
+        if (mDic[window.name].Count == 0)
+            mDic.Remove(window.name);
+    }
+```
+<center>RuntimeEditor窗口注销事件监听，如果销毁的是场景界面，保存相机位置</center>
+
+```csharp
+    /// <summary>
+    /// 选中对象为机器人或者桁架的末端，会显示末端坐标，如子节点有相机，会显示相机成像窗口
+    /// </summary>
+    /// <param name="unselectedObjects"></param>
+    private void SelectionChangedEvent(UnityEngine.Object[] unselectedObjects)
+    {
+        List<SBSceneViewModel> _sceneviews = GetSceneViewModels();
+        Camera _camera = null;
+        IKController _ikcontroller = null;
+        IKTrussController _ikTrussController = null;
+        string _trussid = "";
+
+        if (mSelection.activeObject != null)
+        {
+            GameObject _obj = mSelection.activeObject as GameObject;
+            if (_obj == null) return;
+            if (_obj.activeInHierarchy)
+            {
+
+                ModelGameobjectBase _base = _obj.GetComponentInParent<ModelGameobjectBase>();
+                if (_base != null)
+                {
+                    if (_base is RobotModel)//选中机器人时的处理
+                    {
+                        RobotModel _robot = _base as RobotModel;
+                        if (_robot.ikController == null || !_robot.ikController.IsTarget(_obj) || !_robot.ikController.GetMarkAsDestroyed()) return;
+                        if (mRobotInfo == null)
+                        {
+                            mRobotInfo = GameObject.Instantiate(Resources.Load<GameObject>("UI/Prefabs/RobotDragInfo")) as GameObject;
+                        }
+                        if (!mRobotInfo.activeSelf)
+                        {
+                            mRobotInfo.SetActive(true);
+                        }
+                        _robot.ikController.SetRobotDragInfo(mRobotInfo);
+                        _ikcontroller = _robot.ikController;
+                    }
+                    else if (_base is TrussModel)//选中桁架时的处理
+                    {
+                        TrussModel _truss = _base as TrussModel;
+                        if (_truss.Controller == null || !_truss.Controller.GetMarkAsDestroyed(_obj)) return;
+
+                        _trussid = _truss.Controller.GetTrussID(_obj);
+                        _ikTrussController = _truss.Controller;
+
+                        if (mRobotInfo == null)
+                        {
+                            mRobotInfo = GameObject.Instantiate(Resources.Load<GameObject>("UI/Prefabs/RobotDragInfo")) as GameObject;
+                        }
+                        if (!mRobotInfo.activeSelf)
+                        {
+                            mRobotInfo.SetActive(true);
+                        }
+
+                        _truss.Controller.SetRobotDragInfo(mRobotInfo, _trussid);
+                    }
+                    else
+                    {
+                        if (mRobotInfo != null && mRobotInfo.activeSelf)
+                        {
+                            mRobotInfo.SetActive(false);
+                            mRobotInfo.transform.SetParent(null);
+                        }
+
+                    }
+                }
+                _camera = _obj.GetComponentInChildren<Camera>();
+            }
+        }
+        else
+        {
+            if (mRobotInfo != null && mRobotInfo.activeSelf)
+            {
+                mRobotInfo.SetActive(false);
+                mRobotInfo.transform.SetParent(null);
+            }
+        }
+        // 打开相机成像窗口，显示相机成像内容
+        if (_sceneviews != null && _sceneviews.Count != 0)
+        {
+            _sceneviews.ForEach((v) =>
+            {
+                //v.SetTrussWin(_ikTrussController, _trussid);
+                v.SetCameraRawImage(_camera);
+            });
+        }
+        if (Globals.ToolsStateManager.isCurrentState(ToolsStateID.Robot))
+        {
+            Globals.ToolsStateManager.SetRobotStateController(_ikcontroller);
+        }
+    }
+```
+
+<center>选中对象为机器人或者桁架的末端，会显示末端坐标，如子节点有相机，会显示相机成像窗口</center>
+
+```csharp
+    /// <summary>
+    /// 根据界面名称，获得窗口
+    /// </summary>
+    /// <param name="name"></param>
+    /// <returns></returns>
+    public List<RuntimeWindow> GetRuntimeWindow(string name)
+    {
+        if (mDic.ContainsKey(name))
+        {
+            return mDic[name];
+        }
+        return null;
+    }
+```
+<center>根据界面名称，获得RuntimeWindow类型窗口列表</center>
+
+
+```csharp
+    /// <summary>
+    /// 获得场景界面ViewModel，参数isMain，true代表获得主场景
+    /// </summary>
+    /// <param name="isMain"></param>
+    /// <returns></returns>
+    public List<SBSceneViewModel> GetSceneViewModels(bool isMain = true)
+    {
+        List<RuntimeWindow> _list = GetRuntimeWindow(BuiltInWindowNames.Scene);
+
+        List<SBSceneViewModel> _sceneviews = null;
+
+        if (_list != null && _list.Count != 0)
+        {
+            _sceneviews = new List<SBSceneViewModel>();
+
+            _list.ForEach((v) =>
+            {
+                if (isMain)
+                {
+                    //添加可操作的scene窗口
+                    if (string.IsNullOrEmpty(v.Args) || v.Args.Equals("Main"))
+                    {
+                        SBSceneViewModel _model = v.GetComponent<SBSceneViewModel>();
+                        _sceneviews.Add(_model);
+                    }
+                }
+                else
+                {
+                    SBSceneViewModel _model = v.GetComponent<SBSceneViewModel>();
+                    _sceneviews.Add(_model);
+                }
+
+            });
+        }
+        return _sceneviews;
+    }
+    /// <summary>
+    /// 获得场景界面View，参数isMain，true代表获得主场景的View
+    /// </summary>
+    /// <param name="isMain"></param>
+    /// <returns></returns>
+    public List<SBSceneView> GetSceneViews(bool isMain = true)
+    {
+        List<RuntimeWindow> _list = GetRuntimeWindow(BuiltInWindowNames.Scene);
+
+        List<SBSceneView> _sceneviews = null;
+        if (_list != null && _list.Count != 0)
+        {
+            _sceneviews = new List<SBSceneView>();
+
+            _list.ForEach((v) =>
+            {
+                if (isMain)
+                {
+                    //添加可操作的scene窗口
+                    if (string.IsNullOrEmpty(v.Args) || v.Args.Equals("Main"))
+                    {
+                        SBSceneView _view = v.GetComponent<SBSceneView>();
+                        _sceneviews.Add(_view);
+                    }
+                }
+                else
+                {
+                    SBSceneView _view = v.GetComponent<SBSceneView>();
+                    _sceneviews.Add(_view);
+                }
+
+            });
+        }
+        return _sceneviews;
+    }
+```
+
+<center>获得场景相关数据(View，ViewModel)</center>
