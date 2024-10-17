@@ -27,7 +27,7 @@ blacklist nouveau
 ### Linux(Ubuntu)系统查看显卡型号
 
 ```
-lspci | grep -i vga
+
 ```
 
 ![](./imgs/601.png)
@@ -90,3 +90,10 @@ sudo dpkg --add-architecture i386sudo apt updatesudo apt install build-essential
 ```
 sudo init 5
 ```
+
+# 4 卸载驱动
+
+```shell
+sudo ./NVIDIA-Linux-x86_64-<version>.run --uninstall
+```
+

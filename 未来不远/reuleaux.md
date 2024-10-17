@@ -75,10 +75,6 @@ openrave.py --example hanoi
 
 # 3 问题处理
 
-
-
-
-
 ```shell
 # Cannot find -lhdf5_hl and -lhdf5
 # https://github.com/BVLC/caffe/issues/4333
