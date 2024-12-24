@@ -27,7 +27,7 @@ blacklist nouveau
 ### Linux(Ubuntu)系统查看显卡型号
 
 ```
-
+lspci | grep -i vga
 ```
 
 ![](./imgs/601.png)
